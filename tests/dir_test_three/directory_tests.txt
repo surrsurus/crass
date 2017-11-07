@@ -1,0 +1,1 @@
+Make sure that the cli doesn't handle nested build directories in source directories

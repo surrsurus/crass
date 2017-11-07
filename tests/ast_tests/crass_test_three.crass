@@ -1,0 +1,15 @@
+// Proper crass file
+
+#id = id success
+
+.class = class success
+
+#really_long_id = really long id with a long expansion
+
+.really_long_class = really long class with a long expansion
+
+.class with spaces = spaces
+
+#id with spaces = spaces
+
+// Comment

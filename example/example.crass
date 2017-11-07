@@ -1,0 +1,24 @@
+// Body Styles
+// ----------------------------------------------------------- 
+.compact-body = sapUiBody sapUiSizeCompact
+
+// Shell
+// ----------------------------------------------------------- 
+#basic-shell = sapMShell sapMShellAppWidthLimited sapMShellGlobalOuterBackground
+
+#shell-bg = sapMShellBG sapUiGlobalBackgroundImage sapUiGlobalBackgroundImageForce
+
+#shell-content = sapMShellCentralBox
+
+.shell-section-container = sapMShellContent sapMShellGlobalInnerBackground
+
+// Branding Bar
+// -----------------------------------------------------------
+#branding-bar = sapMShellBrandingBar
+
+// Nav Item
+// -----------------------------------------------------------
+#nav-item = sapMNavItem sapMPage sapMPageBgStandard sapMPageBusyCoversAll sapMPageWithHeader
+
+// Header
+// -----------------------------------------------------------
