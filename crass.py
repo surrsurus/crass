@@ -96,7 +96,7 @@ def buildAST(crassfile):
     for line in file:
 
       # Ignore comments or empty lines
-      if line.startswith('//') or line == '\n':
+      if line.startswith('//') or line in ['\n', '', None]:
         continue
 
       else:
@@ -116,7 +116,7 @@ def buildAST(crassfile):
             raise SyntaxError('Line does not appear to have a proper assignment between alias and expansion')
 
         except ValueError:
-          raise SyntaxError('Line does not look like a proper crass alias definition. You might be missing a = or forgot to comment out this line.')
+          pass
 
 # Parse a list of html files for instances of "class=''" and "id=''"
 def parse(filelist):
@@ -240,7 +240,7 @@ def usage():
 if __name__ == '__main__':
 
   # Take inputs from commandline
-  cli()
+  cli(sys.argv)
 
   # Build an AST of aliases from the crassfile, check for errors
   buildAST(cfg['crass'])
