@@ -1,4 +1,4 @@
-import crass
+from . import crass
 import pytest
 
 # Test the function inputs
