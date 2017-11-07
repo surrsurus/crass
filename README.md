@@ -1,4 +1,7 @@
 # crass
+
+[![Build Status](https://travis-ci.org/surrsurus/crass.svg?branch=master)](https://travis-ci.org/surrsurus/crass)
+
 crass - An HTML Preprocessor for **CR**eating **A**lia**S**e**S**
 
 # Usage
