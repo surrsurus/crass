@@ -1,6 +1,7 @@
 # crass
 
-[![Build Status](https://travis-ci.org/surrsurus/crass.svg?branch=master)](https://travis-ci.org/surrsurus/crass)
+[![Build Status](https://travis-ci.org/surrsurus/gazelle.svg?branch=master)](https://travis-ci.org/surrsurus/gazelle) ![Language](https://img.shields.io/badge/language-python-yellow.svg) ![No Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 crass - An HTML Preprocessor for **CR**eating **A**lia**S**e**S**
 
