@@ -1,4 +1,4 @@
-# crass [![Build Status](https://travis-ci.org/surrsurus/crass.svg?branch=master)](https://travis-ci.org/surrsurus/crass) ![Python Version](https://img.shields.io/badge/python-2.7-green.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# crass [![Build Status](https://travis-ci.org/surrsurus/crass.svg?branch=master)](https://travis-ci.org/surrsurus/crass) ![Python Version](https://img.shields.io/badge/python-3-green.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 crass is an HTML Preprocessor for defining and expanding aliases for class attributes. 
 
@@ -14,7 +14,7 @@ Here's how to get crass set up for usage.
 
 ### Prerequisites
 
-1. Make sure Python 2 or Python 3 is installed. crass will work with either, you can check [Travis CI](https://travis-ci.org/surrsurus/crass) for proof. Make sure you download Python for your respective os. crass works with windows, linux, and OSX. [Download Python here](https://www.python.org/downloads/).
+1. Make sure Python 3 is installed for your respective os. crass works with windows, linux, and OSX. [Download Python here](https://www.python.org/downloads/).
 
 crass requires no other dependencies to function, with the exception of pytest for testing. You can install pytest via the command
 
