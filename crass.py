@@ -1,4 +1,4 @@
-import sys, os, re, shutil, errno, subprocess, filecmp
+import sys, os, re, shutil, errno, subprocess, filecmp, pytest
 
 ################################################################################
 # Global Data
@@ -251,3 +251,57 @@ if __name__ == '__main__':
 
   # Parse all html files and replace any contents that align with our aliases
   parse(htmllist)
+
+################################################################################
+# Tests
+
+# Test the function inputs
+def test_cli_arguments():
+
+  # Too many/few arguments
+  with pytest.raises(TypeError):
+    cli(['0', '1'], ['2', '3'])
+    cli()
+
+  # Check to see if argument is a list
+  with pytest.raises(TypeError):
+    cli("string")
+    cli(1)
+    cli(True)
+
+  # Check list length
+  with pytest.raises(IndexError):
+    cli([])
+    cli(['0'])
+    cli(['0', '1'])
+    cli(['0', '1', '2'])
+    cli(['0', '1', '2', '3', '4'])
+
+  # Correct list length
+  cli(['0', '1', '2', '3'])
+
+
+# Make sure src and build aren't nested
+def test_cli_nested_check():
+  # Improper arrangements
+  with pytest.raises(OSError):
+    cli(['py', './tests/dir_test_one/src', './tests/dir_test_one/crassfile.crass', './tests/dir_test_one/src/build'])
+    cli(['py', './tests/dir_test_two/build/src', './tests/dir_test_two/crassfile.crass', './tests/dir_test_two/build'])
+  
+  # Correct arrangement
+  assert cli(['py', './tests/dir_test_three/src', './tests/dir_test_three/crassfile.crass', './tests/dir_test_three/build']) == None
+
+def test_crass_syntax():
+  # with pytest.raises(SyntaxError):
+  #   buildAST('./tests/ast_tests/crass_test_one.crass')
+  #   buildAST('./tests/ast_tests/crass_test_two.crass')
+
+  # Test a proper crassfile
+  buildAST('./tests/ast_tests/crass_test_three.crass')
+  assert AST['id']['id'] == 'id success'
+  assert AST['class']['class'] == 'class success'
+  assert AST['id']['really_long_id'] == 'really long id with a long expansion'
+  assert AST['class']['really_long_class'] == 'really long class with a long expansion'
+  assert AST['id']['id with spaces'] == 'spaces'
+  assert AST['class']['class with spaces'] == 'spaces'
+  
