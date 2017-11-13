@@ -1,4 +1,9 @@
-import sys, os, re, shutil, errno, subprocess, filecmp, pytest
+import sys, os, re, shutil, errno, subprocess, filecmp
+
+try:
+  import pytest
+except ImportError:
+  print('Warning: Pytest isn\'t installed. This will not affect crass, however you will not be able to run the tests.')
 
 ################################################################################
 # Global Data
