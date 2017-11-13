@@ -4,6 +4,9 @@
 // Vertically fit element and center text in it
 .centered-vertical = centered vertical-fit
 
+// Shorten names
+c = content-text
+
 // Red text for content element
 .text-red = content-text red
 
