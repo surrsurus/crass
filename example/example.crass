@@ -1,24 +1,8 @@
-// Body Styles
-// ----------------------------------------------------------- 
-.compact-body = sapUiBody sapUiSizeCompact
+// Apply the lightgray BG and margin 0 all at once
+.stretched-outer-content = stretch outer-content
 
-// Shell
-// ----------------------------------------------------------- 
-#basic-shell = sapMShell sapMShellAppWidthLimited sapMShellGlobalOuterBackground
+// Vertically fit element and center text in it
+.centered-vertical = centered vertical-fit
 
-#shell-bg = sapMShellBG sapUiGlobalBackgroundImage sapUiGlobalBackgroundImageForce
-
-#shell-content = sapMShellCentralBox
-
-.shell-section-container = sapMShellContent sapMShellGlobalInnerBackground
-
-// Branding Bar
-// -----------------------------------------------------------
-#branding-bar = sapMShellBrandingBar
-
-// Nav Item
-// -----------------------------------------------------------
-#nav-item = sapMNavItem sapMPage sapMPageBgStandard sapMPageBusyCoversAll sapMPageWithHeader
-
-// Header
-// -----------------------------------------------------------
+// Red text for content element
+.text-red = content-text red

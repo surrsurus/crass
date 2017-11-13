@@ -1,5 +1,6 @@
 import sys, os, re, shutil, errno, subprocess, filecmp
 
+# Check for pytest
 try:
   import pytest
 except ImportError:
@@ -19,8 +20,6 @@ cfg = {
 # Essentially just hold all ID elements in one branch and all classes in another,
 # those branches then hold the 1:1 connection between aliases and their expansions
 AST = {
-  'id':    {},
-  'class': {}
 }
 
 ################################################################################
@@ -114,9 +113,7 @@ def buildAST(crassfile):
 
           # Classify into IDs and Classes, then update the AST accordingly
           if alias.startswith('.'):
-            AST['class'][alias[1:]] = expansion
-          elif alias.startswith('#'):
-            AST['id'][alias[1:]] = expansion
+            AST[alias[1:]] = expansion
           else:
             raise SyntaxError('Line does not appear to have a proper assignment between alias and expansion')
 
@@ -145,27 +142,14 @@ def parse(filelist):
         # Get contents of "class=''"
         classes = re.findall(r'class\s*=\s*[\"\']\s*(.*?)\s*[\"\']', line, re.DOTALL)
         
-        # Get contents of "id=''"
-        ids = re.findall(r'id\s*=\s*[\"\']\s*(.*?)\s*[\"\']', line, re.DOTALL)
-
         # If there are classes declared on this line...
         if classes:
           
           # ... Iterate over them and compare it to our AST
           # Then replace if they are present
           for c in classes:
-            if c in AST['class']:
-              replace(c, AST['class'][c], path, cfg['build'] + path)
-              replaced = True
-
-        # If there are ids declared on this line
-        if ids:
-          
-          # ... Iterate over them and compare it to our AST
-          # Then replace if they are present
-          for i in ids:
-            if i in AST['id']:
-              replace(i, AST['id'][i], path, cfg['build'] + path)
+            if c in AST:
+              replace(c, AST[c], path, cfg['build'] + path)
               replaced = True
 
     # If no matches, still copy the file to build
@@ -303,10 +287,7 @@ def test_crass_syntax():
 
   # Test a proper crassfile
   buildAST('./tests/ast_tests/crass_test_three.crass')
-  assert AST['id']['id'] == 'id success'
-  assert AST['class']['class'] == 'class success'
-  assert AST['id']['really_long_id'] == 'really long id with a long expansion'
-  assert AST['class']['really_long_class'] == 'really long class with a long expansion'
-  assert AST['id']['id with spaces'] == 'spaces'
-  assert AST['class']['class with spaces'] == 'spaces'
+  assert AST['class'] == 'class success'
+  assert AST['really_long_class'] == 'really long class with a long expansion'
+  assert AST['class with spaces'] == 'spaces'
   

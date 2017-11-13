@@ -1,10 +1,10 @@
 # crass [![Build Status](https://travis-ci.org/surrsurus/crass.svg?branch=master)](https://travis-ci.org/surrsurus/crass) ![Python Version](https://img.shields.io/badge/python-2.7-green.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-crass is an HTML Preprocessor for defining and expanding aliases. 
+crass is an HTML Preprocessor for defining and expanding aliases for class attributes. 
 
-Have you ever run into a situation where your html tag might have 5 or more classes or ids and you find yourself constantly copying that snippet over and over? Your HTML might get very cluttered, very quickly depending on your CSS libraries. Thankfully, crass allows you to define aliases for all of these class and id combinations to improve overall readability. 
+Have you ever run into a situation where your html tag might have 5 or more classes and you find yourself constantly copying that snippet over and over? Your HTML might get very cluttered, very quickly depending on your CSS libraries. Thankfully, crass allows you to define aliases for all of these class combinations to improve overall readability. 
 
-For example, if you ever tried creating webpages using the OpenSAPUI5's CSS, you'll know that your html tags become incredibly cluttered with CSS elements, but with crass, you can make this headache dissapear by assigning common patterns to single word aliases.
+For example, if you ever tried creating webpages using the OpenSAPUI5's CSS, you'll know that your html tags become incredibly cluttered with CSS classes, but with crass, you can make this headache dissapear by assigning common patterns to single word aliases.
 
 crass uses a 'crassfile' that is parsed to form a list of aliases that is compared to your source directory. crass will then search the directory for all aliases in your html files that you created in your crassfile and create a new directory with all of the changes. It will preserve your directory structure, and copy in all files regardless if they are HTML or not. You don't need to make any changes to the structure of your existing website, and since crass only operates on your html files you can continue to use CSS or any CSS preprocessor with crass you want.
 
@@ -51,14 +51,11 @@ Here is an example of a typical crassfile
 // Doesn't have to have the .crass extension, however, as long as the file is in this format
 // This is a comment
 
-// Here is an example id alias
-#id-alias = id1 id2 id3
-
-// And an example class alias
+// Example class alias
 .class-alias = class1 class2 class3
 ```
 
-By giving this file to crass, it will compare it to your HTML files and replace instances of `class="class-alias"` and `id="id-alias"` with the expansion to become `class="class1 class2 class3"` and `id="id1 id2 id3"` respectively.
+By giving this file to crass, it will compare it to your HTML files and replace instances of `class="class-alias"` with the expansion to become `class="class1 class2 class3"`.
 
 #### Example Website with Aliases
 
