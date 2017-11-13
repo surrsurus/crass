@@ -30,16 +30,16 @@ WARN    = '[#]' # Warning: not critical, but there is still something wrong
 NORMAL  = '[:]' # Normal: regular output for updates and progress
 FOUND   = '[@]' # Found: found a file
 
-# Log to the console
 def log(string, label=NORMAL):
+  ''' Log to the console '''
   print(label + ' ' + string)
 
 ################################################################################
 # File utilities
 
-# Take a path and examine all of it's contents recursively for files
-# that end with a specific extension and return a list of those paths
 def analyzeDir(path, extension):
+  ''' Take a path and examine all of it's contents recursively for files
+  that end with a specific extension and return a list of those paths '''
 
   # Recursively analyze the directory for HTML files
   filelist = []
@@ -62,9 +62,9 @@ def analyzeDir(path, extension):
 
   return filelist
 
-# Copy contents of one file to another file or directory
-# and create the outfile if it doesn't exist
 def copyfile(infile, outfile):
+  ''' Copy contents of one file to another file or directory
+  and create the outfile if it doesn't exist '''
 
   # Check to see if infile is a directory that doesn't exist
   if not os.path.exists(os.path.dirname(outfile)):
@@ -99,23 +99,22 @@ def buildAliasDict(crassfile):
       else:
 
         try:
-
           # Split line at the equals sign and strip trailing whitespace
           alias, expansion = line.split('=')
-          alias, expansion = alias.strip(), expansion.strip()
-
-          # Classify into IDs and Classes, then update the alias dict accordingly
-          if alias.startswith('.'):
-            alias = alias[1:]
-
-          # Add alias
-          AliasDict[alias] = expansion
-
         except ValueError:
           raise ValueError('Error Building AliasDict: Missing = on line ' + str(i + 1))
 
-# Parse a list of html files for instances of "class=''" and "id=''"
+        alias, expansion = alias.strip(), expansion.strip()
+
+        # Classify into IDs and Classes, then update the alias dict accordingly
+        if alias.startswith('.'):
+          alias = alias[1:]
+
+        # Add alias
+        AliasDict[alias] = expansion
+
 def parse(filelist):
+  ''' Parse a list of html files for instances of `class=` '''
 
   log('Parsing targets...')
 
@@ -153,8 +152,8 @@ def parse(filelist):
 ################################################################################
 # Replacer
 
-# Replace all instances of instance in infile with replacement
 def replace(instance, replacement, infile, outfile):
+  ''' Replace all instances of `instance` in `infile` with `replacement` '''
 
   log('Searching for instances of ' + instance + ' in ' + infile)
 
@@ -185,12 +184,18 @@ def replace(instance, replacement, infile, outfile):
 
 # Handle arguments
 def cli(args):
+  ''' Interface with argv or any list of arguments to gather file locations '''
 
   if not isinstance(args, list):
     raise TypeError('Argument to must be a list.')
   if len(args) != 4:
     usage()
     raise IndexError('Improper number of arguments given, refer to usage above.')
+
+  # Make sure we aren't getting weird types
+  for arg in args:
+    if not isinstance(arg, str):
+      raise TypeError('Argument ' + str(arg) + ' is not a string!')
 
   cfg['src'], cfg['crass'], cfg['build'] = args[1], args[2], args[3]
 
@@ -206,8 +211,8 @@ def cli(args):
         if os.path.realpath(outerdir).startswith(os.path.realpath(innerdir)):
           raise OSError(outerdir + ' is inside ' + innerdir + '. Un-nest directories and try again.')
 
-# Display how the program is intended to be used
 def usage():
+  ''' Display how the program is intended to be used '''
   print('USAGE: crass.py <source directory> <crassfile> <output directory>')
 
 ################################################################################
