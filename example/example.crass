@@ -6,3 +6,9 @@
 
 // Red text for content element
 .text-red = content-text red
+
+// Though we can also use this. No dot needed
+text-red = content-text red
+
+// But we actually don't even need the hyphen at all too
+text red = content-text red

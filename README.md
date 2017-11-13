@@ -53,6 +53,13 @@ Here is an example of a typical crassfile
 
 // Example class alias
 .class-alias = class1 class2 class3
+
+// However dots are not required
+also-an-alias = class4 class5 class6
+
+// Neither are hyphens
+also an alias = class7 class8 class9
+
 ```
 
 By giving this file to crass, it will compare it to your HTML files and replace instances of `class="class-alias"` with the expansion to become `class="class1 class2 class3"`.

@@ -19,8 +19,7 @@ cfg = {
 # Store the crass abstract syntax tree
 # Essentially just hold all ID elements in one branch and all classes in another,
 # those branches then hold the 1:1 connection between aliases and their expansions
-AST = {
-}
+AliasDict = {}
 
 ################################################################################
 # Logging
@@ -61,12 +60,6 @@ def analyzeDir(path, extension):
       else:
         copyfile(path, cfg['build'] + path)
 
-  # Alert to user if there is anything to do
-  if filelist:
-    log('Found targets: ' + ', '.join(filelist), FOUND)
-  else:
-    log('No targets found', WARN)
-
   return filelist
 
 # Copy contents of one file to another file or directory
@@ -93,16 +86,16 @@ def copyfile(infile, outfile):
 ################################################################################
 # Parsers
 
-# Build an AST from the crassfile, which is just a dictionary that links 1:1 between the alias and their expansion
-def buildAST(crassfile):
+def buildAliasDict(crassfile):
+  ''' Build an AliasDict from the crassfile, which is just a dictionary 
+  that links the alias to it's expansion '''
 
   with open(crassfile) as file:
-    for line in file:
+    for i, line in enumerate(file):
 
       # Ignore comments or empty lines
       if line.startswith('//') or line in ['\n', '', None]:
         continue
-
       else:
 
         try:
@@ -111,14 +104,15 @@ def buildAST(crassfile):
           alias, expansion = line.split('=')
           alias, expansion = alias.strip(), expansion.strip()
 
-          # Classify into IDs and Classes, then update the AST accordingly
+          # Classify into IDs and Classes, then update the alias dict accordingly
           if alias.startswith('.'):
-            AST[alias[1:]] = expansion
-          else:
-            raise SyntaxError('Line does not appear to have a proper assignment between alias and expansion')
+            alias = alias[1:]
+
+          # Add alias
+          AliasDict[alias] = expansion
 
         except ValueError:
-          pass
+          raise ValueError('Error Building AliasDict: Missing = on line ' + str(i + 1))
 
 # Parse a list of html files for instances of "class=''" and "id=''"
 def parse(filelist):
@@ -145,11 +139,11 @@ def parse(filelist):
         # If there are classes declared on this line...
         if classes:
           
-          # ... Iterate over them and compare it to our AST
+          # ... Iterate over them and compare it to our AliasDict
           # Then replace if they are present
           for c in classes:
-            if c in AST:
-              replace(c, AST[c], path, cfg['build'] + path)
+            if c in AliasDict:
+              replace(c, AliasDict[c], path, cfg['build'] + path)
               replaced = True
 
     # If no matches, still copy the file to build
@@ -198,14 +192,7 @@ def cli(args):
     usage()
     raise IndexError('Improper number of arguments given, refer to usage above.')
 
-  # Get source directory
-  cfg['src'] =   args[1]
-
-  # Get crass file
-  cfg['crass'] = args[2]
-
-  # Get build directory
-  cfg['build'] = args[3]
+  cfg['src'], cfg['crass'], cfg['build'] = args[1], args[2], args[3]
 
   # Error Handling
   log('Making sure directories aren\'t nested...')
@@ -221,7 +208,7 @@ def cli(args):
 
 # Display how the program is intended to be used
 def usage():
-  print('USAGE: swan.py <source directory> <crass file> <output directory>')
+  print('USAGE: crass.py <source directory> <crassfile> <output directory>')
 
 ################################################################################
 # Main
@@ -231,8 +218,8 @@ if __name__ == '__main__':
   # Take inputs from commandline
   cli(sys.argv)
 
-  # Build an AST of aliases from the crassfile, check for errors
-  buildAST(cfg['crass'])
+  # Build an AliasDict of aliases from the crassfile, check for errors
+  buildAliasDict(cfg['crass'])
 
   # Analyze a directory for html files.
   # Copy all non-html files to build directory
@@ -246,6 +233,7 @@ if __name__ == '__main__':
 
 # Test the function inputs
 def test_cli_arguments():
+  ''' Test to see if the CLI is functioning as intended '''
 
   # Too many/few arguments
   with pytest.raises(TypeError):
@@ -272,6 +260,8 @@ def test_cli_arguments():
 
 # Make sure src and build aren't nested
 def test_cli_nested_check():
+  ''' Test to see if crass identifies possible recursion problems '''
+
   # Improper arrangements
   with pytest.raises(OSError):
     cli(['py', './tests/dir_test_one/src', './tests/dir_test_one/crassfile.crass', './tests/dir_test_one/src/build'])
@@ -281,13 +271,34 @@ def test_cli_nested_check():
   assert cli(['py', './tests/dir_test_three/src', './tests/dir_test_three/crassfile.crass', './tests/dir_test_three/build']) == None
 
 def test_crass_syntax():
-  # with pytest.raises(SyntaxError):
-  #   buildAST('./tests/ast_tests/crass_test_one.crass')
-  #   buildAST('./tests/ast_tests/crass_test_two.crass')
+  ''' Test to see if crass can identify proper errors
+  and read files properly'''
+
+  with pytest.raises(ValueError):
+    buildAliasDict('./tests/ast_tests/crass_test_one.crass')
+    buildAliasDict('./tests/ast_tests/crass_test_two.crass')
 
   # Test a proper crassfile
-  buildAST('./tests/ast_tests/crass_test_three.crass')
-  assert AST['class'] == 'class success'
-  assert AST['really_long_class'] == 'really long class with a long expansion'
-  assert AST['class with spaces'] == 'spaces'
+  buildAliasDict('./tests/ast_tests/crass_test_three.crass')
+  assert AliasDict['class'] == 'class'
+  assert AliasDict['really_long_class'] == 'really long class with a long expansion'
+  assert AliasDict['class with spaces'] == 'class with spaces'
+  assert AliasDict['no_dot'] == 'no dot'
+  assert AliasDict['no dot and spaces'] == 'no dot and spaces'
+
+def test_deployment():
+  ''' Test crass by using an example website '''
+
+  # Take inputs from commandline
+  cli(['crass.py', './example/src', './example/example.crass', './example/build'])
+
+  # Build an AliasDict of aliases from the crassfile, check for errors
+  buildAliasDict(cfg['crass'])
+
+  # Analyze a directory for html files.
+  # Copy all non-html files to build directory
+  htmllist = analyzeDir(cfg['src'], '.html')
+
+  # Parse all html files and replace any contents that align with our aliases
+  parse(htmllist)
   

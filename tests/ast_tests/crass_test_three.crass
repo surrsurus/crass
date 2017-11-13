@@ -1,9 +1,13 @@
 // Proper crass file
 
-.class = class success
+.class = class
 
 .really_long_class = really long class with a long expansion
 
-.class with spaces = spaces
+.class with spaces = class with spaces
+
+no_dot = no dot
+
+no dot and spaces = no dot and spaces
 
 // Comment
