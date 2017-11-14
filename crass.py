@@ -182,7 +182,6 @@ def replace(instance, replacement, infile, outfile):
 ################################################################################
 # CLI
 
-# Handle arguments
 def cli(args):
   ''' Interface with argv or any list of arguments to gather file locations '''
 
