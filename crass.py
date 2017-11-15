@@ -94,7 +94,7 @@ def buildAliasDict(crassfile):
     for i, line in enumerate(file):
 
       # Ignore comments or empty lines
-      if line.startswith('//') or line in ['\n', '', None]:
+      if line.startswith('//') or line.rstrip() in ['', None]:
         continue
       else:
 
