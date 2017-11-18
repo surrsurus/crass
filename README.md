@@ -19,7 +19,7 @@ Here's how to get crass set up for usage.
 crass requires no other dependencies to function, with the exception of pytest for testing. You can install pytest via the command
 
 ```
-pip install pytest
+$ pip install pytest
 ```
 
 ### Running
@@ -27,7 +27,7 @@ pip install pytest
 Crass can be run like this:
 
 ```
-crass <path to source> <path to crassfile> <path to desired build directory>
+$ crass <path to source> <path to crassfile> <path to desired build directory>
 ```
 
 ### Running the Tests
@@ -35,7 +35,7 @@ crass <path to source> <path to crassfile> <path to desired build directory>
 Once you have pytest installed via pip (see above), you can run
 
 ```
-pytest crass.py
+$ pytest crass.py
 ```
 
 to run the testing suite.
@@ -46,7 +46,7 @@ to run the testing suite.
 
 Here is an example of a typical crassfile
 
-```
+```css
 // my_crassfile.crass
 // Doesn't have to have the .crass extension, however, as long as the file is in this format
 // This is a comment
@@ -68,7 +68,9 @@ By giving this file to crass, it will compare it to your HTML files and replace 
 
 By running 
 
-```crass.py ./example/src/ ./example/example.crass ./example/build/```
+```
+$ crass.py ./example/src/ ./example/example.crass ./example/build/
+```
 
  you'll create an example webiste in a `build` directory under `example` that will be created at runtime. Then just open up `index.html` in your browser of choice.
 
